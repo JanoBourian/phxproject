@@ -9,3 +9,11 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+for name <- ["J. K. Rowling", "George Orwell", "Ernest Hemingway"] do
+  {:ok, _} = Bookstore.Catalog.create_author(%{name: name})
+end
+
+for name <- ["Fantasy", "Adventure fiction", "Science fiction", "Horror", "Thriller"] do
+  {:ok, _} = Bookstore.Catalog.create_category(%{name: name})
+end
