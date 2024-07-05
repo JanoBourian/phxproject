@@ -25,6 +25,7 @@ defmodule BookstoreWeb.Router do
     pipe_through :api
 
     resources "/authors", AuthorController, except: [:new, :edit]
+    resources "/categories", CategoryController, except: [:new, :edit]
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
