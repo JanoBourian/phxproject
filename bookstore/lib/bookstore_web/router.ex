@@ -21,7 +21,7 @@ defmodule BookstoreWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  scope "/api/v1", BookstoreWeb do
+  scope "/api", BookstoreWeb do
     pipe_through :api
 
     resources "/authors", AuthorController, except: [:new, :edit]
