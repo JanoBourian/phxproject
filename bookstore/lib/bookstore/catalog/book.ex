@@ -15,7 +15,7 @@ defmodule Bookstore.Catalog.Book do
     book
     |> cast(attrs, [:title])
     |> validate_required([:title])
-    |> validate_length(:name, min: 1)
-    |> unique_constraint(:name)
+    |> validate_length(:title, min: 1)
+    |> unique_constraint(:title)
   end
 end
