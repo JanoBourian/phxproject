@@ -7,6 +7,10 @@ defmodule Bookstore.Catalog do
   alias Bookstore.Repo
 
   alias Bookstore.Catalog.Author
+  alias Bookstore.Catalog.Category
+  alias Bookstore.Catalog.Book
+  alias Bookstore.Catalog.BookAuthor
+  alias Bookstore.Catalog.BookCategory
 
   @doc """
   Returns the list of authors.
@@ -102,8 +106,6 @@ defmodule Bookstore.Catalog do
     Author.changeset(author, attrs)
   end
 
-  alias Bookstore.Catalog.Category
-
   @doc """
   Returns the list of categories.
 
@@ -198,8 +200,6 @@ defmodule Bookstore.Catalog do
     Category.changeset(category, attrs)
   end
 
-  alias Bookstore.Catalog.Book
-
   @doc """
   Returns the list of books.
 
@@ -227,7 +227,11 @@ defmodule Bookstore.Catalog do
       ** (Ecto.NoResultsError)
 
   """
-  def get_book!(id), do: Repo.get!(Book, id)
+  def get_book!(id) do
+    Book
+    |> Repo.get!(id)
+    |> Repo.preload([:authors, :categories])
+  end
 
   @doc """
   Creates a book.
@@ -243,8 +247,9 @@ defmodule Bookstore.Catalog do
   """
   def create_book(attrs \\ %{}) do
     %Book{}
-    |> Book.changeset(attrs)
+    |> change_book(attrs)
     |> Repo.insert()
+
   end
 
   @doc """
@@ -261,7 +266,7 @@ defmodule Bookstore.Catalog do
   """
   def update_book(%Book{} = book, attrs) do
     book
-    |> Book.changeset(attrs)
+    |> change_book(attrs)
     |> Repo.update()
   end
 
@@ -281,16 +286,26 @@ defmodule Bookstore.Catalog do
     Repo.delete(book)
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking book changes.
-
-  ## Examples
-
-      iex> change_book(book)
-      %Ecto.Changeset{data: %Book{}}
-
-  """
   def change_book(%Book{} = book, attrs \\ %{}) do
-    Book.changeset(book, attrs)
+    authors = get_authors_id(attrs["author_ids"])
+    categories = get_categories_id(attrs["category_ids"])
+
+    book
+    |> Repo.preload([:categories, :authors])
+    |> Book.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:categories, categories)
+    |> Ecto.Changeset.put_assoc(:authors, authors)
+
   end
+
+  def get_authors_id(nil), do: []
+  def get_authors_id(author_ids) do
+    Repo.all(from a in Author, where: a.id in ^author_ids)
+  end
+
+  def get_categories_id(nil), do: []
+  def get_categories_id(category_ids) do
+    Repo.all(from c in Category, where: c.id in ^category_ids)
+  end
+
 end
