@@ -26,6 +26,7 @@ defmodule BookstoreWeb.Router do
 
     resources "/authors", AuthorController, except: [:new, :edit]
     resources "/categories", CategoryController, except: [:new, :edit]
+    resources "/books", BookController, except: [:new, :edit]
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

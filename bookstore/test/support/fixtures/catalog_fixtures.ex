@@ -41,4 +41,18 @@ defmodule Bookstore.CatalogFixtures do
 
     category
   end
+
+  @doc """
+  Generate a book.
+  """
+  def book_fixture(attrs \\ %{}) do
+    {:ok, book} =
+      attrs
+      |> Enum.into(%{
+        title: "some title"
+      })
+      |> Bookstore.Catalog.create_book()
+
+    book
+  end
 end
