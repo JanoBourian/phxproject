@@ -39,7 +39,9 @@ defmodule Bookstore.Catalog do
       ** (Ecto.NoResultsError)
 
   """
-  def get_author!(id), do: Repo.get!(Author, id)
+  def get_author!(id) do
+    Repo.get!(Author, id) |> IO.inspect()
+  end
 
   @doc """
   Creates a author.
@@ -133,7 +135,9 @@ defmodule Bookstore.Catalog do
       ** (Ecto.NoResultsError)
 
   """
-  def get_category!(id), do: Repo.get!(Category, id)
+  def get_category!(id) do
+    Repo.get!(Category, id)
+  end
 
   @doc """
   Creates a category.
@@ -211,6 +215,7 @@ defmodule Bookstore.Catalog do
   """
   def list_books do
     Repo.all(Book)
+    |> Repo.preload([:authors, :categories])
   end
 
   @doc """

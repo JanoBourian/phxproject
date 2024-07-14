@@ -1,5 +1,6 @@
 defmodule BookstoreWeb.BookJSON do
-  alias Bookstore.Catalog.Book
+  alias Bookstore.Catalog.{Author, Book, Category}
+  import Bookstore.Catalog
 
   @doc """
   Renders a list of books.
@@ -18,7 +19,9 @@ defmodule BookstoreWeb.BookJSON do
   defp data(%Book{} = book) do
     %{
       id: book.id,
-      title: book.title
+      title: book.title,
+      authors: Enum.map(book.authors, fn(a) -> BookstoreWeb.AuthorJSON.data(get_author!(a.id)) end),
+      categories: Enum.map(book.categories, fn(c) -> BookstoreWeb.CategoryJSON.data(get_category!(c.id)) end)
     }
   end
 end
