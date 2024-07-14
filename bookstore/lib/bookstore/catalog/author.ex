@@ -1,4 +1,5 @@
 defmodule Bookstore.Catalog.Author do
+  alias Bookstore.Catalog.Book
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -6,6 +7,8 @@ defmodule Bookstore.Catalog.Author do
   @foreign_key_type :binary_id
   schema "authors" do
     field :name, :string
+
+    many_to_many :books, Book, join_through: "books_authors", on_replace: :delete
 
     timestamps(type: :utc_datetime)
   end

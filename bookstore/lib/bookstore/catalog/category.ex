@@ -1,4 +1,5 @@
 defmodule Bookstore.Catalog.Category do
+  alias Bookstre.Category.Book
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -6,6 +7,8 @@ defmodule Bookstore.Catalog.Category do
   @foreign_key_type :binary_id
   schema "categories" do
     field :name, :string
+
+    many_to_many :books, Books, join_through: "books_categories", on_replace: :delete
 
     timestamps(type: :utc_datetime)
   end

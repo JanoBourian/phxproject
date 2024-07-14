@@ -287,14 +287,17 @@ defmodule Bookstore.Catalog do
   end
 
   def change_book(%Book{} = book, attrs \\ %{}) do
-    authors = get_authors_id(attrs["author_ids"])
-    categories = get_categories_id(attrs["category_ids"])
+
+    authors = get_authors_id(attrs["authors"])
+    categories = get_categories_id(attrs["categories"])
 
     book
     |> Repo.preload([:categories, :authors])
     |> Book.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:categories, categories)
     |> Ecto.Changeset.put_assoc(:authors, authors)
+    |> validate_authors(authors)
+    |> validate_categories(categories)
 
   end
 
@@ -306,6 +309,24 @@ defmodule Bookstore.Catalog do
   def get_categories_id(nil), do: []
   def get_categories_id(category_ids) do
     Repo.all(from c in Category, where: c.id in ^category_ids)
+  end
+
+  def validate_authors(changeset, authors) do
+    with [] <- authors do
+      changeset
+      |> Ecto.Changeset.add_error(:authors, "authors have to have valid authors")
+    else
+      _ -> changeset
+    end
+  end
+
+  def validate_categories(changeset, categories) do
+    with [] <- categories do
+      changeset
+      |> Ecto.Changeset.add_error(:categories, "categories have to have valid categories")
+    else
+      _ -> changeset
+    end
   end
 
 end
