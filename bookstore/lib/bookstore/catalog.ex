@@ -254,7 +254,6 @@ defmodule Bookstore.Catalog do
     %Book{}
     |> change_book(attrs)
     |> Repo.insert()
-
   end
 
   @doc """
@@ -292,7 +291,6 @@ defmodule Bookstore.Catalog do
   end
 
   def change_book(%Book{} = book, attrs \\ %{}) do
-
     authors = get_authors_id(attrs["authors"])
     categories = get_categories_id(attrs["categories"])
 
@@ -303,15 +301,16 @@ defmodule Bookstore.Catalog do
     |> Ecto.Changeset.put_assoc(:authors, authors)
     |> validate_authors(authors)
     |> validate_categories(categories)
-
   end
 
   def get_authors_id(nil), do: []
+
   def get_authors_id(author_ids) do
     Repo.all(from a in Author, where: a.id in ^author_ids)
   end
 
   def get_categories_id(nil), do: []
+
   def get_categories_id(category_ids) do
     Repo.all(from c in Category, where: c.id in ^category_ids)
   end
@@ -333,5 +332,4 @@ defmodule Bookstore.Catalog do
       _ -> changeset
     end
   end
-
 end

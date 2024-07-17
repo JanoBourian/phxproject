@@ -13,12 +13,14 @@ defmodule Bookstore.Repo.Migrations.PivotTables do
 
     create table(:books_categories, primary_key: false) do
       add :books_id, references(:books, on_delete: :delete_all, type: :binary_id), source: :id
-      add :categories_id, references(:categories, on_delete: :delete_all, type: :binary_id), source: :id
+
+      add :categories_id, references(:categories, on_delete: :delete_all, type: :binary_id),
+        source: :id
+
       timestamps(type: :utc_datetime)
     end
 
     create index(:books_categories, [:books_id])
     create index(:books_categories, [:categories_id])
-
   end
 end

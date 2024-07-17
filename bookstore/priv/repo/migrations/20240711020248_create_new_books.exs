@@ -11,5 +11,4 @@ defmodule Bookstore.Repo.Migrations.FixBooksTable do
 
     create unique_index(:books, [:title])
   end
-
 end
