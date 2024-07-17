@@ -15,7 +15,7 @@ defmodule BookstoreWeb.CategoryJSON do
     %{data: data(category)}
   end
 
-  def data(%Category{} = category) do
+  defp data(%Category{} = category) do
     %{
       id: category.id,
       name: category.name

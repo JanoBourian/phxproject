@@ -15,7 +15,7 @@ defmodule BookstoreWeb.AuthorJSON do
     %{data: data(author)}
   end
 
-  def data(%Author{} = author) do
+  defp data(%Author{} = author) do
     %{
       id: author.id,
       name: author.name

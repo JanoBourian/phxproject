@@ -20,8 +20,8 @@ defmodule BookstoreWeb.BookJSON do
     %{
       id: book.id,
       title: book.title,
-      authors: Enum.map(book.authors, fn(a) -> BookstoreWeb.AuthorJSON.data(get_author!(a.id)) end),
-      categories: Enum.map(book.categories, fn(c) -> BookstoreWeb.CategoryJSON.data(get_category!(c.id)) end)
+      authors: BookstoreWeb.AuthorJSON.index(%{authors: book.authors}),
+      categories: BookstoreWeb.CategoryJSON.index(%{categories: book.categories})
     }
   end
 end
